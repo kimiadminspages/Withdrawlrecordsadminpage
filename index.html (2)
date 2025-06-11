@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Withdrawal Records</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        
+        /* Disable text selection */
+        * {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Disable drag of images and links */
+        img, a {
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            -o-user-drag: none;
+            user-drag: none;
+        }
+        
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --primary-light: #e6eaf8;
+            --secondary: #6c757d;
+            --success: #4cc9a0;
+            --danger: #f72585;
+            --warning: #ffbe0b;
+            --info: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --gray-light: #e9ecef;
+            --gray-dark: #495057;
+            --body-bg: #f5f7ff;
+            --card-bg: #ffffff;
+            --border-radius: 16px;
+            --border-radius-sm: 8px;
+            --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+        
+        body {
+            background-color: var(--body-bg);
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            background-image: 
+                radial-gradient(at 80% 0%, hsla(189, 100%, 56%, 0.1) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, hsla(355, 100%, 93%, 0.1) 0px, transparent 50%);
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-shadow: 0 2px 4px rgba(67, 97, 238, 0.1);
+        }
+        
+        .logo img {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            object-fit: contain;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card {
+            background: var(--glass-bg);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--box-shadow);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            transition: var(--transition);
+        }
+        
+        .card:hover {
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+            transform: translateY(-2px);
+        }
+        
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: var(--dark);
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .card-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 3px;
+        }
+        
+        .card-title i {
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+        
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(255,255,255,0.1), rgba(255,255,255,0));
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .btn:hover::after {
+            opacity: 1;
+        }
+        
+        .btn:active {
+            transform: scale(0.98);
+        }
+        
+        .btn i {
+            font-size: 1.1rem;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            box-shadow: 0 8px 25px rgba(67, 97, 238, 0.4);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            margin-top: 10px;
+        }
+        
+        .btn-outline:hover {
+            background: rgba(67, 97, 238, 0.1);
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.1);
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+            box-shadow: 0 4px 15px rgba(76, 201, 160, 0.3);
+        }
+        
+        .btn-success:hover {
+            background: #3db58d;
+            box-shadow: 0 8px 25px rgba(76, 201, 160, 0.4);
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+            box-shadow: 0 4px 15px rgba(247, 37, 133, 0.3);
+        }
+        
+        .btn-warning {
+            background: var(--warning);
+            color: var(--dark);
+            box-shadow: 0 4px 15px rgba(255, 190, 11, 0.3);
+        }
+        
+        .btn-info {
+            background: var(--info);
+            color: white;
+            box-shadow: 0 4px 15px rgba(72, 149, 239, 0.3);
+        }
+        
+        .shake {
+            animation: shake 0.5s;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+        
+        .button-click {
+            transform: scale(0.95);
+            opacity: 0.9;
+        }
+        
+        /* Withdrawal Records Styles */
+        .withdrawal-record {
+            border: 1px solid var(--gray-light);
+            border-radius: var(--border-radius);
+            padding: 18px;
+            margin-bottom: 15px;
+            transition: var(--transition);
+            background: white;
+            position: relative;
+        }
+        
+        .withdrawal-record:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transform: translateY(-3px);
+        }
+        
+        .record-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+        
+        .record-id {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.95rem;
+            background: var(--primary-light);
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+        
+        .record-date {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+        
+        .record-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+        
+        .record-amount {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .record-fee {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+        
+        .record-status {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-processing {
+            background-color: rgba(255, 193, 7, 0.15);
+            color: var(--warning);
+        }
+        
+        .status-completed {
+            background-color: rgba(76, 201, 160, 0.15);
+            color: var(--success);
+        }
+        
+        .status-failed {
+            background-color: rgba(247, 37, 133, 0.15);
+            color: var(--danger);
+        }
+        
+        .status-pending {
+            background-color: rgba(72, 149, 239, 0.15);
+            color: var(--info);
+        }
+        
+        .record-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .record-actions .btn {
+            flex: 1;
+            padding: 10px;
+            font-size: 0.85rem;
+            border-radius: 8px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray);
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--gray-light);
+        }
+        
+        .empty-state p {
+            margin-top: 10px;
+            color: var(--gray);
+        }
+        
+        /* Admin Panel Styles */
+        .admin-panel {
+            display: none;
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .admin-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--danger);
+        }
+        
+        .search-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 14px 15px 14px 45px;
+            border: 1px solid var(--gray-light);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.1);
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+        
+        .user-list {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            border-radius: var(--border-radius);
+        }
+        
+        .user-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid var(--gray-light);
+            cursor: pointer;
+            transition: var(--transition);
+            background: white;
+        }
+        
+        .user-item:first-child {
+            border-top-left-radius: var(--border-radius);
+            border-top-right-radius: var(--border-radius);
+        }
+        
+        .user-item:last-child {
+            border-bottom-left-radius: var(--border-radius);
+            border-bottom-right-radius: var(--border-radius);
+            border-bottom: none;
+        }
+        
+        .user-item:hover {
+            background-color: rgba(67, 97, 238, 0.05);
+            transform: translateX(5px);
+        }
+        
+        .user-info {
+            flex: 1;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .user-id {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+        
+        .user-stats {
+            text-align: right;
+        }
+        
+        .user-withdrawals {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .user-pending {
+            font-size: 0.8rem;
+            color: var(--warning);
+        }
+        
+        .user-details {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .user-withdrawals-list {
+            margin-top: 15px;
+        }
+        
+        /* Feedback Form */
+        .feedback-form {
+            margin-top: 20px;
+        }
+        
+        .feedback-form textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid var(--gray-light);
+            border-radius: var(--border-radius-sm);
+            font-size: 1rem;
+            margin-bottom: 10px;
+            resize: vertical;
+            min-height: 120px;
+            background: white;
+            transition: var(--transition);
+        }
+        
+        .feedback-form textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.1);
+        }
+        
+        /* Hidden admin access */
+        .admin-access {
+            display: none;
+            margin-top: 15px;
+        }
+        
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-container {
+            background: white;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .modal-overlay.active .modal-container {
+            transform: translateY(0);
+        }
+        
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--gray-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+            transition: var(--transition);
+        }
+        
+        .modal-close:hover {
+            color: var(--danger);
+            transform: rotate(90deg);
+        }
+        
+        .modal-content {
+            padding: 20px;
+        }
+        
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid var(--gray-light);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        /* App Logos Grid */
+        .app-logos {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .app-logo {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 12px;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            cursor: pointer;
+            overflow: hidden;
+        }
+        
+        .app-logo:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .app-logo img {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+        }
+        
+        /* Confetti effect */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary);
+            opacity: 0;
+            z-index: 999;
+            animation: confetti-fall 3s ease-in-out forwards;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px 20px;
+            border-radius: var(--border-radius-sm);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transform: translateX(150%);
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 300px;
+        }
+        
+        .notification.active {
+            transform: translateX(0);
+        }
+        
+        .notification-success {
+            border-left: 4px solid var(--success);
+        }
+        
+        .notification-error {
+            border-left: 4px solid var(--danger);
+        }
+        
+        .notification-info {
+            border-left: 4px solid var(--info);
+        }
+        
+        .notification i {
+            font-size: 1.5rem;
+        }
+        
+        .notification-success i {
+            color: var(--success);
+        }
+        
+        .notification-error i {
+            color: var(--danger);
+        }
+        
+        .notification-info i {
+            color: var(--info);
+        }
+        
+        .notification-content {
+            flex: 1;
+        }
+        
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .notification-message {
+            font-size: 0.9rem;
+            color: var(--gray-dark);
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+            
+            .record-actions {
+                flex-direction: column;
+            }
+            
+            .record-actions .btn {
+                width: 100%;
+            }
+            
+            .app-logos {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <img src="https://i.ibb.co/KpjPfSwn/Kimi-win-icon.png" alt="Wallet Logo">
+                <span>Withdrawal Records</span>
+            </div>
+            <div>
+                <button class="btn btn-outline" onclick="playSound('click2'); location.href='go:786'">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+            </div>
+        </header>
+        
+        <div class="card">
+            <div class="card-title">
+                <i class="fas fa-file-invoice-dollar"></i>
+                <span>Your Withdrawal History</span>
+            </div>
+            
+            <div id="userRecords">
+                <!-- User records will be loaded here -->
+                <div class="empty-state">
+                    <i class="fas fa-file-alt"></i>
+                    <h3>No Withdrawals Yet</h3>
+                    <p>Your withdrawal history will appear here once you make requests.</p>
+                </div>
+            </div>
+            
+            <div class="feedback-form">
+                <textarea id="feedbackInput" placeholder="Have any questions about your withdrawals? Send us feedback here..."></textarea>
+                <button class="btn btn-primary" onclick="playSound('click1'); sendFeedback()">
+                    <i class="fas fa-paper-plane"></i> Send Feedback
+                </button>
+                <div class="admin-access">
+                    <button class="btn btn-danger" onclick="playSound('click3'); checkAdminAccess()">
+                        <i class="fas fa-lock"></i> Admin Access
+                    </button>
+                </div>
+            </div>
+            
+            <div class="app-logos">
+                <div class="app-logo" onclick="playSound('click4')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/926px-UPI-Logo-vector.svg.png?20200901100648" alt="">
+                </div>
+                <div class="app-logo" onclick="playSound('click5')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Seal_of_the_Reserve_Bank_of_India.svg/330px-Seal_of_the_Reserve_Bank_of_India.svg.png" alt="">
+                </div>
+                <div class="app-logo" onclick="playSound('click6')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Razorpay_logo.svg/1599px-Razorpay_logo.svg.png?20171127075036" alt="">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Admin Panel (hidden by default) -->
+        <div class="card admin-panel" id="adminPanel">
+            <div class="admin-header">
+                <div class="admin-title">
+                    <i class="fas fa-user-shield"></i> Admin Panel
+                </div>
+                <button class="btn btn-outline" onclick="playSound('click4'); exitAdminPanel()">
+                    <i class="fas fa-sign-out-alt"></i> Exit
+                </button>
+            </div>
+            
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="adminSearch" placeholder="Search users by ID or name..." oninput="playSound('click5')">
+            </div>
+            
+            <div class="user-list" id="userList">
+                <!-- User list will be loaded here -->
+            </div>
+            
+            <div id="userDetailsPanel">
+                <!-- User details will be loaded here when clicked -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Structure -->
+    <div class="modal-overlay" id="withdrawalModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Withdrawal Details</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-content" id="modalContent">
+                <!-- Modal content will be loaded here -->
+            </div>
+            <div class="modal-footer" id="modalFooter">
+                <!-- Modal footer buttons will be loaded here -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <div class="notification-content">
+            <div class="notification-title">Success</div>
+            <div class="notification-message">Your action was completed successfully</div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    
+    <script>
+        // Sound effects
+        const sounds = {
+            click1: 'https://audio.jukehost.co.uk/5F1nLPVtJFUKU9gY67x4DKvYrWWNtRWy',
+            click2: '',
+            click3: '',
+            click4: '',
+            click5: '',
+            click6: '',
+            click7: '',
+            click8: '',
+            click9: '',
+            click10: ''
+        };
+        
+        // Play sound function
+        function playSound(soundName) {
+            if (!sounds[soundName]) return;
+            
+            const audio = new Audio(sounds[soundName]);
+            audio.volume = 0.3;
+            audio.play().catch(e => console.log("Audio play failed:", e));
+        }
+        
+        // Show notification
+        function showNotification(type, title, message, duration = 3000) {
+            const notification = document.getElementById('notification');
+            notification.className = `notification notification-${type}`;
+            notification.querySelector('i').className = `fas ${
+                type === 'success' ? 'fa-check-circle' : 
+                type === 'error' ? 'fa-times-circle' : 'fa-info-circle'
+            }`;
+            notification.querySelector('.notification-title').textContent = title;
+            notification.querySelector('.notification-message').textContent = message;
+            
+            notification.classList.add('active');
+            
+            setTimeout(() => {
+                notification.classList.remove('active');
+            }, duration);
+        }
+        
+        // Create confetti effect
+        function createConfetti() {
+            const colors = ['#4361ee', '#f72585', '#4cc9a0', '#ffbe0b', '#4895ef'];
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+        
+        // Modal functions
+        function openModal(title, content, footer = '') {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalContent').innerHTML = content;
+            document.getElementById('modalFooter').innerHTML = footer;
+            document.getElementById('withdrawalModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            playSound('click6');
+        }
+        
+        function closeModal() {
+            document.getElementById('withdrawalModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            playSound('click7');
+        }
+        
+        // Initialize Firebase with your configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZ-znvqufe3kTB_sPxQUiOdmbjXm00D8c",
+            authDomain: "customerchat-88407.firebaseapp.com",
+            databaseURL: "https://customerchat-88407-default-rtdb.firebaseio.com",
+            projectId: "customerchat-88407",
+            storageBucket: "customerchat-88407.appspot.com",
+            messagingSenderId: "1094190373370",
+            appId: "1:1094190373370:web:9ef8834bb5c1d7f84c2c43"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        
+        // Get user data from localStorage
+        let userData = JSON.parse(localStorage.getItem('userData')) || {
+            balance: 0,
+            withdrawableBalance: 0,
+            investments: {},
+            redeemedCodes: {},
+            transactions: [],
+            savedBankDetails: [],
+            withdrawalIds: {},
+            withdrawals: [],
+            lastDailyReferral: null
+        };
+        
+        // Generate or retrieve user ID
+        function getUserId() {
+            if (!userData.userId) {
+                // Check saved bank details for existing user ID
+                if (userData.savedBankDetails.length > 0 && userData.savedBankDetails[0].userId) {
+                    userData.userId = userData.savedBankDetails[0].userId;
+                } else {
+                    // Generate new user ID
+                    userData.userId = Math.floor(1000000000 + Math.random() * 9000000000).toString();
+                }
+                localStorage.setItem('userData', JSON.stringify(userData));
+            }
+            return userData.userId;
+        }
+        
+        // Admin passkey (change this to your secure passkey)
+        const ADMIN_PASSKEY = "8099997729";
+        
+        // Check if user has any withdrawals in local storage
+        function hasLocalWithdrawals() {
+            return userData.withdrawals && userData.withdrawals.length > 0;
+        }
+        
+        // Format date
+        function formatDate(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleString();
+        }
+        
+        // Format currency
+        function formatCurrency(amount) {
+            return "₹" + parseFloat(amount).toFixed(2);
+        }
+        
+        // Get status badge
+        function getStatusBadge(status) {
+            switch(status.toLowerCase()) {
+                case 'completed':
+                    return '<span class="record-status status-completed">Completed</span>';
+                case 'failed':
+                    return '<span class="record-status status-failed">Failed</span>';
+                case 'pending':
+                    return '<span class="record-status status-pending">Pending</span>';
+                default:
+                    return '<span class="record-status status-processing">Processing</span>';
+            }
+        }
+        
+        // Load user withdrawal records
+        function loadUserRecords() {
+            const userId = getUserId();
+            const recordsContainer = document.getElementById('userRecords');
+            
+            // Check local storage first
+            if (hasLocalWithdrawals()) {
+                recordsContainer.innerHTML = '';
+                
+                // Sort withdrawals by timestamp (newest first)
+                const sortedWithdrawals = [...userData.withdrawals].sort((a, b) => b.timestamp - a.timestamp);
+                
+                sortedWithdrawals.forEach(withdrawal => {
+                    const recordElement = document.createElement('div');
+                    recordElement.className = 'withdrawal-record';
+                    recordElement.innerHTML = `
+                        <div class="record-header">
+                            <div class="record-id">#${withdrawal.withdrawalId}</div>
+                            <div class="record-date">${formatDate(withdrawal.timestamp)}</div>
+                        </div>
+                        <div class="record-details">
+                            <div>
+                                <div class="record-amount">${formatCurrency(withdrawal.amount)}</div>
+                                <div class="record-fee">Fee: ${formatCurrency(withdrawal.fee || 0)}</div>
+                            </div>
+                            ${getStatusBadge(withdrawal.status || 'processing')}
+                        </div>
+                        <div class="record-actions">
+                            <button class="btn btn-outline" onclick="playSound('click8'); viewWithdrawalDetails('${withdrawal.withdrawalId}')">
+                                <i class="fas fa-info-circle"></i> Details
+                            </button>
+                            <button class="btn btn-primary" onclick="playSound('click9'); contactSupport('${withdrawal.withdrawalId}')">
+                                <i class="fas fa-headset"></i> Support
+                            </button>
+                        </div>
+                    `;
+                    recordsContainer.appendChild(recordElement);
+                });
+            } else {
+                recordsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-file-alt"></i>
+                        <h3>No Withdrawals Yet</h3>
+                        <p>Your withdrawal history will appear here once you make requests.</p>
+                    </div>
+                `;
+            }
+            
+            // Also check Firebase for any updates
+            checkFirebaseRecords(userId);
+        }
+        
+        // Check Firebase for withdrawal records and updates
+        function checkFirebaseRecords(userId) {
+            const userRef = database.ref('withdrawals/' + userId);
+            
+            userRef.on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    // Update local records with Firebase data
+                    const firebaseWithdrawals = Object.values(data);
+                    
+                    // Merge with local withdrawals
+                    firebaseWithdrawals.forEach(fbWithdrawal => {
+                        const localIndex = userData.withdrawals.findIndex(
+                            w => w.withdrawalId === fbWithdrawal.withdrawalId
+                        );
+                        
+                        if (localIndex >= 0) {
+                            // Update existing record
+                            userData.withdrawals[localIndex] = {
+                                ...userData.withdrawals[localIndex],
+                                ...fbWithdrawal
+                            };
+                        } else {
+                            // Add new record from Firebase
+                            userData.withdrawals.unshift(fbWithdrawal);
+                        }
+                    });
+                    
+                    // Save to local storage
+                    localStorage.setItem('userData', JSON.stringify(userData));
+                    
+                    // Reload records
+                    loadUserRecords();
+                    
+                    // Show notification if new records were added
+                    if (firebaseWithdrawals.length > 0 && hasLocalWithdrawals()) {
+                        showNotification('success', 'Update', 'Your withdrawal records have been updated');
+                    }
+                }
+            });
+        }
+        
+        // View withdrawal details
+        function viewWithdrawalDetails(withdrawalId) {
+            const withdrawal = userData.withdrawals.find(w => w.withdrawalId === withdrawalId);
+            if (!withdrawal) return;
+            
+            const transaction = userData.transactions.find(t => 
+                t.withdrawalId === withdrawalId && t.type === 'withdrawal'
+            );
+            
+            let message = `
+                <div style="text-align: left;">
+                    <h3 style="margin-bottom: 15px; color: var(--primary);">Withdrawal Details</h3>
+                    <p><strong>Order ID:</strong> ${withdrawal.withdrawalId}</p>
+                    <p><strong>Date:</strong> ${formatDate(withdrawal.timestamp)}</p>
+                    <p><strong>Amount:</strong> ${formatCurrency(withdrawal.amount)}</p>
+                    <p><strong>Fee:</strong> ${formatCurrency(withdrawal.fee || 0)}</p>
+                    <p><strong>Status:</strong> ${getStatusBadge(withdrawal.status || 'processing')}</p>
+            `;
+            
+            if (transaction && transaction.bankDetails) {
+                message += `
+                    <hr style="margin: 10px 0; border-color: var(--gray-light);">
+                    <h4 style="margin: 15px 0 5px; color: var(--primary);">Bank Details</h4>
+                    <p><strong>Account:</strong> ••••${transaction.bankDetails.account.slice(-4)}</p>
+                    <p><strong>IFSC:</strong> ${transaction.bankDetails.ifsc}</p>
+                    <p><strong>Name:</strong> ${transaction.bankDetails.name}</p>
+                `;
+            }
+            
+            message += `</div>`;
+            
+            openModal('Withdrawal Details', message, `
+                <button class="btn btn-primary" onclick="playSound('click10'); closeModal()">
+                    <i class="fas fa-check"></i> OK
+                </button>
+            `);
+        }
+        
+        // Contact support about a withdrawal
+        function contactSupport(withdrawalId) {
+            const withdrawal = userData.withdrawals.find(w => w.withdrawalId === withdrawalId);
+            if (!withdrawal) return;
+            
+            const whatsappMessage = `Withdrawal Support Request\n\nOrder ID: ${withdrawalId}\nAmount: ${formatCurrency(withdrawal.amount)}\nStatus: ${withdrawal.status || 'processing'}\n\nPlease assist with my withdrawal.`;
+            window.open(`https://wa.me/+918099997729?text=${encodeURIComponent(whatsappMessage)}`);
+        }
+        
+        // Send feedback
+        function sendFeedback() {
+            const feedbackInput = document.getElementById('feedbackInput');
+            const feedback = feedbackInput.value.trim();
+            
+            if (!feedback) {
+                showNotification('error', 'Error', 'Please enter your feedback or question.');
+                feedbackInput.focus();
+                return;
+            }
+            
+            // Check if this is actually an admin trying to access the panel
+            if (feedback === ADMIN_PASSKEY) {
+                checkAdminAccess();
+                feedbackInput.value = '';
+                return;
+            }
+            
+            // For normal users, send feedback
+            const userId = getUserId();
+            const feedbackRef = database.ref('feedback/' + Date.now());
+            
+            feedbackRef.set({
+                userId: userId,
+                message: feedback,
+                timestamp: Date.now(),
+                status: 'new'
+            }).then(() => {
+                showNotification('success', 'Thank You', 'We\'ll get back to you soon!');
+                feedbackInput.value = '';
+                createConfetti();
+            }).catch(error => {
+                showNotification('error', 'Error', 'Failed to send feedback. Please try again.');
+                console.error("Feedback error:", error);
+            });
+        }
+        
+        // ADMIN FUNCTIONS
+        
+        // Check admin access
+        function checkAdminAccess() {
+            const feedbackInput = document.getElementById('feedbackInput');
+            const passkey = feedbackInput.value.trim();
+            
+            if (passkey === ADMIN_PASSKEY) {
+                // Correct passkey - show admin panel
+                document.getElementById('adminPanel').style.display = 'block';
+                document.getElementById('userRecords').style.display = 'none';
+                document.querySelector('.feedback-form').style.display = 'none';
+                feedbackInput.value = '';
+                
+                // Load admin data
+                loadAdminData();
+                
+                // Show success notification
+                showNotification('success', 'Access Granted', 'Welcome to Admin Panel');
+            } else {
+                showNotification('error', 'Access Denied', 'Invalid admin passkey!');
+                feedbackInput.classList.add('shake');
+                setTimeout(() => {
+                    feedbackInput.classList.remove('shake');
+                }, 500);
+            }
+        }
+        
+        // Exit admin panel
+        function exitAdminPanel() {
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('userRecords').style.display = 'block';
+            document.querySelector('.feedback-form').style.display = 'block';
+            showNotification('info', 'Logged Out', 'You have exited admin mode');
+        }
+        
+        // Load admin data
+        function loadAdminData() {
+            const userList = document.getElementById('userList');
+            userList.innerHTML = '<p>Loading users...</p>';
+            
+            const usersRef = database.ref('withdrawals');
+            
+            usersRef.on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (!data) {
+                    userList.innerHTML = '<p>No withdrawal records found.</p>';
+                    return;
+                }
+                
+                userList.innerHTML = '';
+                
+                Object.entries(data).forEach(([userId, withdrawals]) => {
+                    const userWithdrawals = Object.values(withdrawals);
+                    const pendingCount = userWithdrawals.filter(w => w.status === 'processing' || w.status === 'pending').length;
+                    
+                    const userItem = document.createElement('div');
+                    userItem.className = 'user-item';
+                    userItem.onclick = () => {
+                        playSound('click1');
+                        loadUserWithdrawals(userId);
+                    };
+                    userItem.innerHTML = `
+                        <div class="user-info">
+                            <div class="user-name">User ID: ${userId}</div>
+                            <div class="user-id">${userWithdrawals.length} withdrawal(s)</div>
+                        </div>
+                        <div class="user-stats">
+                            <div class="user-withdrawals">${formatCurrency(userWithdrawals.reduce((sum, w) => sum + parseFloat(w.amount), 0))}</div>
+                            ${pendingCount > 0 ? `<div class="user-pending">${pendingCount} pending</div>` : ''}
+                        </div>
+                    `;
+                    userList.appendChild(userItem);
+                });
+            });
+        }
+        
+        // Load a user's withdrawals for admin
+        function loadUserWithdrawals(userId) {
+            const userRef = database.ref('withdrawals/' + userId);
+            const detailsPanel = document.getElementById('userDetailsPanel');
+            
+            userRef.on('value', (snapshot) => {
+                const withdrawals = snapshot.val();
+                if (!withdrawals) {
+                    detailsPanel.innerHTML = '<p>No withdrawals found for this user.</p>';
+                    return;
+                }
+                
+                let html = `
+                    <div class="user-details" style="display: block;">
+                        <h3>User ID: ${userId}</h3>
+                        <p>Total withdrawals: ${Object.keys(withdrawals).length}</p>
+                        
+                        <div class="user-withdrawals-list">
+                            <h4>Withdrawal History</h4>
+                `;
+                
+                // Sort withdrawals by timestamp (newest first)
+                const sortedWithdrawals = Object.values(withdrawals).sort((a, b) => b.timestamp - a.timestamp);
+                
+                sortedWithdrawals.forEach(withdrawal => {
+                    html += `
+                        <div class="withdrawal-record">
+                            <div class="record-header">
+                                <div class="record-id">#${withdrawal.withdrawalId}</div>
+                                <div class="record-date">${formatDate(withdrawal.timestamp)}</div>
+                            </div>
+                            <div class="record-details">
+                                <div>
+                                    <div class="record-amount">${formatCurrency(withdrawal.amount)}</div>
+                                    <div class="record-fee">Fee: ${formatCurrency(withdrawal.fee || 0)}</div>
+                                </div>
+                                ${getStatusBadge(withdrawal.status || 'processing')}
+                            </div>
+                            <div class="record-actions">
+                                <button class="btn btn-success" onclick="playSound('click2'); updateWithdrawalStatus('${userId}', '${withdrawal.withdrawalId}', 'completed')">
+                                    <i class="fas fa-check"></i> Approve
+                                </button>
+                                <button class="btn btn-danger" onclick="playSound('click3'); updateWithdrawalStatus('${userId}', '${withdrawal.withdrawalId}', 'failed')">
+                                    <i class="fas fa-times"></i> Reject
+                                </button>
+                                <button class="btn btn-warning" onclick="playSound('click4'); updateWithdrawalStatus('${userId}', '${withdrawal.withdrawalId}', 'pending')">
+                                    <i class="fas fa-pause"></i> Pending
+                                </button>
+                                <button class="btn btn-info" onclick="playSound('click5'); viewFullWithdrawalDetails('${userId}', '${withdrawal.withdrawalId}')">
+                                    <i class="fas fa-search"></i> Details
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += `</div></div>`;
+                detailsPanel.innerHTML = html;
+                
+                // Scroll to details
+                setTimeout(() => {
+                    detailsPanel.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            });
+        }
+        
+        // Update withdrawal status (admin)
+        function updateWithdrawalStatus(userId, withdrawalId, status) {
+            openModal('Confirm Action', `
+                <p>Are you sure you want to mark withdrawal <strong>#${withdrawalId}</strong> as <strong>${status}</strong>?</p>
+                <p>This action cannot be undone.</p>
+            `, `
+                <button class="btn btn-outline" onclick="closeModal()">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button class="btn btn-${status === 'completed' ? 'success' : status === 'failed' ? 'danger' : 'warning'}" 
+                    onclick="confirmStatusUpdate('${userId}', '${withdrawalId}', '${status}')">
+                    <i class="fas fa-check"></i> Confirm
+                </button>
+            `);
+        }
+        
+        function confirmStatusUpdate(userId, withdrawalId, status) {
+            closeModal();
+            
+            const updates = {};
+            updates[`withdrawals/${userId}/${withdrawalId}/status`] = status;
+            updates[`withdrawals/${userId}/${withdrawalId}/processedAt`] = Date.now();
+            
+            database.ref().update(updates).then(() => {
+                showNotification('success', 'Status Updated', `Withdrawal marked as ${status}`);
+                createConfetti();
+            }).catch(error => {
+                showNotification('error', 'Update Failed', 'Could not update withdrawal status');
+                console.error("Update error:", error);
+            });
+        }
+        
+        // View full withdrawal details (admin)
+        function viewFullWithdrawalDetails(userId, withdrawalId) {
+            const withdrawalRef = database.ref(`withdrawals/${userId}/${withdrawalId}`);
+            
+            withdrawalRef.once('value').then(snapshot => {
+                const withdrawal = snapshot.val();
+                if (!withdrawal) return;
+                
+                // Try to get bank details from transactions
+                const bankDetailsRef = database.ref(`transactions/${userId}/${withdrawalId}`);
+                
+                bankDetailsRef.once('value').then(bankSnapshot => {
+                    const transaction = bankSnapshot.val();
+                    let message = `
+                        <div style="text-align: left;">
+                            <h3 style="margin-bottom: 15px; color: var(--primary);">Withdrawal Details (Admin)</h3>
+                            <p><strong>Order ID:</strong> ${withdrawal.withdrawalId}</p>
+                            <p><strong>User ID:</strong> ${userId}</p>
+                            <p><strong>Date:</strong> ${formatDate(withdrawal.timestamp)}</p>
+                            <p><strong>Amount:</strong> ${formatCurrency(withdrawal.amount)}</p>
+                            <p><strong>Fee:</strong> ${formatCurrency(withdrawal.fee || 0)}</p>
+                            <p><strong>Status:</strong> ${getStatusBadge(withdrawal.status || 'processing')}</p>
+                    `;
+                    
+                    if (transaction && transaction.bankDetails) {
+                        message += `
+                            <hr style="margin: 10px 0; border-color: var(--gray-light);">
+                            <h4 style="margin: 15px 0 5px; color: var(--primary);">Bank Details</h4>
+                            <p><strong>Account:</strong> ${transaction.bankDetails.account}</p>
+                            <p><strong>IFSC:</strong> ${transaction.bankDetails.ifsc}</p>
+                            <p><strong>Name:</strong> ${transaction.bankDetails.name}</p>
+                        `;
+                    }
+                    
+                    message += `</div>`;
+                    
+                    openModal('Admin Details', message, `
+                        <button class="btn btn-primary" onclick="closeModal()">
+                            <i class="fas fa-check"></i> Close
+                        </button>
+                    `);
+                });
+            });
+        }
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserRecords();
+            
+            // Show admin access button if passkey is entered in feedback
+            document.getElementById('feedbackInput').addEventListener('input', function() {
+                const adminAccessDiv = document.querySelector('.admin-access');
+                if (this.value === ADMIN_PASSKEY) {
+                    adminAccessDiv.style.display = 'block';
+                    playSound('click6');
+                } else {
+                    adminAccessDiv.style.display = 'none';
+                }
+            });
+            
+            // Also check for existing withdrawals in Firebase on page load
+            const userId = getUserId();
+            checkFirebaseRecords(userId);
+            
+            // Sync any local withdrawals to Firebase
+            if (hasLocalWithdrawals()) {
+                syncLocalWithdrawalsToFirebase();
+            }
+            
+            // Play welcome sound
+            setTimeout(() => playSound('click7'), 500);
+        });
+        
+        // Sync local withdrawals to Firebase
+        function syncLocalWithdrawalsToFirebase() {
+            const userId = getUserId();
+            const withdrawalsRef = database.ref('withdrawals/' + userId);
+            
+            // Check if we already have records in Firebase
+            withdrawalsRef.once('value').then(snapshot => {
+                const existingRecords = snapshot.val() || {};
+                
+                // Find withdrawals that aren't in Firebase yet
+                const newWithdrawals = userData.withdrawals.filter(w => 
+                    !existingRecords[w.withdrawalId]
+                );
+                
+                if (newWithdrawals.length > 0) {
+                    // Add new withdrawals to Firebase
+                    const updates = {};
+                    newWithdrawals.forEach(withdrawal => {
+                        updates[withdrawal.withdrawalId] = withdrawal;
+                    });
+                    
+                    withdrawalsRef.update(updates).then(() => {
+                        console.log("Synced local withdrawals to Firebase");
+                    }).catch(error => {
+                        console.error("Sync error:", error);
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+</html>
